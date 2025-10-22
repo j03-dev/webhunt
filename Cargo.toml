@@ -12,10 +12,8 @@ members = ["webhunt", "webhunt-derive", "tests"]
 [workspace.dependencies]
 reqwest = "0.12.4"
 scraper = "0.24.0"
-tokio = "1.48.0"
 
 # derive
-proc-macro2 = "1"
 quote = "1.0.40"
 syn = "2.0"
 deluxe = "0.5"
