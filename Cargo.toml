@@ -1,10 +1,17 @@
+[workspace.package]
+version = "0.1.0"
+authors = ["FITAHIANA Nomeniavo Joee <24nomeniavo@gmail.com>"]
+edition = "2024"
+license-file = "LICENSE"
+description = "Web scraping library with derive macros"
+
 [workspace]
 resolver = "2"
 members = ["webhunt", "webhunt-derive", "tests"]
 
 [workspace.dependencies]
 reqwest = "0.12.4"
-scraper = "0.19.0"
+scraper = "0.24.0"
 tokio = "1.48.0"
 
 # derive

@@ -1,13 +1,15 @@
 [package]
 name = "webhunt-derive"
-version = "0.1.0"
-edition = "2024"
+version.workspace = true
+edition.workspace= true
+authors.workspace = true
+description.workspace = true
+license-file.workspace = true
 
 [lib]
 proc-macro = true
 
 [dependencies]
-proc-macro2.workspace = true
 quote.workspace = true
 syn.workspace = true
 deluxe.workspace = true

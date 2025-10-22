@@ -1,9 +1,11 @@
 [package]
 name = "tests"
-version = "0.1.0"
-edition = "2024"
+version.workspace = true
+edition.workspace= true
+authors.workspace = true
+description.workspace = true
+license-file.workspace = true
 
 
 [dependencies]
 webhunt.workspace = true
-tokio = { workspace = true, features = ["full"] }
