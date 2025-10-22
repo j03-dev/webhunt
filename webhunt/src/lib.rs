@@ -24,3 +24,7 @@ pub async fn open(url: String) -> Result<Html, reqwest::Error> {
     let document = response.text().await.unwrap();
     Ok(Html::parse_document(&document))
 }
+
+trait Hunt {
+    const URL: &srt;
+}
