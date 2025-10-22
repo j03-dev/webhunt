@@ -1,20 +1,8 @@
-use deluxe::{ExtractAttributes, ParseMetaItem};
-
-#[derive(ParseMetaItem)]
-pub enum Kind {
-    Inner,
-    Attribute(String),
-}
-
-impl Default for Kind {
-    fn default() -> Self {
-        Self::Inner
-    }
-}
+use deluxe::ExtractAttributes;
 
 #[derive(ExtractAttributes, Default)]
-#[deluxe(attributes(args))]
-pub struct Args {
+#[deluxe(attributes(select))]
+pub struct Select {
     pub tag: String,
-    pub kind: Kind,
+    pub attr: Option<String>,
 }

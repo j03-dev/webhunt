@@ -5,9 +5,9 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::{DeriveInput, parse_macro_input};
 
-use crate::types::Args;
+use crate::types::Select;
 
-#[proc_macro_derive(Hunt, attributes(field))]
+#[proc_macro_derive(Hunt, attributes(select))]
 pub fn hunt_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
 
@@ -25,19 +25,19 @@ pub fn hunt_derive(input: TokenStream) -> TokenStream {
         let field_type = &field.ty;
 
         let mut field_attrs = field.attrs.clone();
-        let args = Args::extract_attributes(&mut field_attrs).unwrap_or_default();
+        let args = Select::extract_attributes(&mut field_attrs).unwrap();
 
         let tag = args.tag;
 
-        match args.kind {
-            types::Kind::Inner => {
-                quote! {
-                    #field_ident: webhunt::get_element_inner_html::<#field_type>(html, #tag)
-                }
-            }
-            types::Kind::Attribute(attr) => {
+        match args.attr {
+            Some(attr) => {
                 quote! {
                     #field_ident: webhunt::get_element_attribute::<#field_type>(html, #tag, #attr)
+                }
+            }
+            _ => {
+                quote! {
+                    #field_ident: webhunt::get_element_inner_html::<#field_type>(html, #tag)
                 }
             }
         }
@@ -45,8 +45,6 @@ pub fn hunt_derive(input: TokenStream) -> TokenStream {
 
     let expanded = quote! {
         impl Hunt for #struct_name {
-            const URL: &'static str = "TODO: Specify URL with #[hunt(url = \"...\")]";
-
             fn from_html(html: &webhunt::Html) -> Self {
                 Self {
                     #(#field_assignments),*
