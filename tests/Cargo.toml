@@ -5,6 +5,7 @@ edition.workspace= true
 authors.workspace = true
 description.workspace = true
 license-file.workspace = true
+publish = false
 
 
 [dependencies]
