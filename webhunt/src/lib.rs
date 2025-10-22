@@ -4,7 +4,6 @@ pub use webhunt_derive::Hunt;
 const ERR_MSG: &str = "Failed to parse this html";
 
 pub fn get_element_inner_html<T: FromIterator<String>>(html: &Html, tag: &str) -> T {
-    println!("tag: {:?}", tag);
     let selector = Selector::parse(tag).expect(ERR_MSG);
     html.select(&selector).map(|elt| elt.inner_html()).collect()
 }
