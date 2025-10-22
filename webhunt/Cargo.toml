@@ -8,3 +8,4 @@ edition = "2024"
 [dependencies]
 reqwest.workspace = true
 scraper.workspace = true
+webhunt-derive.workspace = true
