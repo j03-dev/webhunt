@@ -1,30 +1,36 @@
 pub use scraper::{Html, Selector};
 pub use webhunt_derive::Hunt;
 
-pub type Error = Box<dyn std::error::Error>;
+pub type Error<'a> = scraper::error::SelectorErrorKind<'a>;
 
-pub fn get_element_inner_html<T: FromIterator<String>>(html: &Html, tag: &str) -> Result<T, Error> {
-    let selector = Selector::parse(Box::leak(tag.to_string().into_boxed_str()))?;
+pub fn get_element_inner_html<'i, T: FromIterator<String>>(
+    html: &'i Html,
+    tag: &'i str,
+) -> Result<T, Error<'i>> {
+    let selector = Selector::parse(tag)?;
     Ok(html.select(&selector).map(|elt| elt.inner_html()).collect())
 }
 
-pub fn get_element_attribute<T: FromIterator<String>>(
+pub fn get_element_attribute<'a, T: FromIterator<String>>(
     html: &Html,
-    tag: &str,
-    attr: &str,
-) -> Result<T, Error> {
-    let selector = Selector::parse(Box::leak(tag.to_string().into_boxed_str()))?;
-    Ok(html
-        .select(&selector)
+    tag: &'a str,
+    attr: &'a str,
+) -> Result<T, Error<'a>> {
+    let selector = Selector::parse(tag)?;
+    html.select(&selector)
         .map(|elt| {
             elt.value()
                 .attr(attr)
-                .expect("This attribute is not exist")
-                .to_string()
+                .ok_or_else(|| {
+                    Error::InvalidAtRule(format!(
+                        "Attribute '{}' not found on element selected by '{}'",
+                        attr, tag,
+                    ))
+                })
+                .map(|value| value.to_string())
         })
-        .collect())
+        .collect()
 }
-
 pub async fn open(url: &str) -> Result<Html, reqwest::Error> {
     let response = reqwest::get(url).await?;
     let document = response.text().await?;
@@ -32,7 +38,7 @@ pub async fn open(url: &str) -> Result<Html, reqwest::Error> {
 }
 
 pub trait Hunt {
-    fn from_html(html: &Html) -> Result<Self, Error>
+    fn from_html<'a>(html: &'a Html) -> Result<Self, Error<'a>>
     where
         Self: Sized;
 }
