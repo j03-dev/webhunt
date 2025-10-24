@@ -3,7 +3,7 @@ mod types;
 use deluxe::ExtractAttributes;
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{DeriveInput, parse_macro_input};
+use syn::{parse_macro_input, DeriveInput};
 
 use crate::types::Select;
 
@@ -32,12 +32,12 @@ pub fn hunt_derive(input: TokenStream) -> TokenStream {
         match args.attr {
             Some(attr) => {
                 quote! {
-                    #field_ident: webhunt::get_element_attribute::<#field_type>(html, #tag, #attr)
+                    #field_ident: webhunt::get_element_attribute::<#field_type>(html, #tag, #attr)?
                 }
             }
             _ => {
                 quote! {
-                    #field_ident: webhunt::get_element_inner_html::<#field_type>(html, #tag)
+                    #field_ident: webhunt::get_element_inner_html::<#field_type>(html, #tag)?
                 }
             }
         }
@@ -45,10 +45,13 @@ pub fn hunt_derive(input: TokenStream) -> TokenStream {
 
     let expanded = quote! {
         impl Hunt for #struct_name {
-            fn from_html(html: &webhunt::Html) -> Self {
-                Self {
-                    #(#field_assignments),*
-                }
+            fn from_html(html: &webhunt::Html) -> Result<Self, webhunt::Error>
+            {
+                Ok(
+                    Self {
+                        #(#field_assignments),*
+                    }
+                )
             }
         }
     };

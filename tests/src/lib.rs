@@ -38,13 +38,14 @@ const HTML: &'static str = r#"
 fn test_get_element_attribute_complex() {
     let html = Html::parse_document(HTML);
 
-    let names: Vec<String> = get_element_attribute(&html, "td.name", "class");
+    let names: Vec<String> = get_element_attribute(&html, "td.name", "class").unwrap_or_default();
     assert_eq!(names, vec!["name", "name", "name"]);
 
-    let emails: Vec<String> = get_element_attribute(&html, "td.email", "class");
+    let emails: Vec<String> = get_element_attribute(&html, "td.email", "class").unwrap_or_default();
     assert_eq!(emails, vec!["email", "email", "email"]);
 
-    let input_values: Vec<String> = get_element_attribute(&html, "input[name]", "name");
+    let input_values: Vec<String> =
+        get_element_attribute(&html, "input[name]", "name").unwrap_or_default();
     assert!(input_values.contains(&"username".to_string()));
     assert!(input_values.contains(&"csrf_token".to_string()));
 }
@@ -66,7 +67,8 @@ struct ComplexData {
 fn test_hunt_derive_complex() {
     let html = Html::parse_document(HTML);
     let data = ComplexData::from_html(&html);
-
+    assert!(data.is_ok());
+    let data = data.unwrap();
     assert_eq!(data.names, vec!["Alice", "Bob", "Charlie"]);
     assert_eq!(data.username, "test_user");
     assert_eq!(data.selected_country, "us");
