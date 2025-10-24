@@ -18,7 +18,7 @@ webhunt = { git = "https://github.com/j03-dev/webhunt", branch="main" }
 
 I primarily use this package for my **personal** web scraping needs and wanted to share it. I've tried to make it as **accessible** as possible and optimize the user experience.
 
-Since this project uses the `scraper` crate, the syntax is **similar**. If you encounter any problems or need more information, you can check the `scraper` documentation.
+Since this project uses the `scraper` crate, the syntax is **similar**. If you encounter any problems or need more information, you can check the `scraper` [documentation](https://docs.rs/scraper/latest/scraper/).
 
 ```rust
 use webhunt::{Html, Hunt};
