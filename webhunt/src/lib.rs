@@ -23,8 +23,7 @@ pub fn get_element_attribute<'a, T: FromIterator<String>>(
                 .attr(attr)
                 .ok_or_else(|| {
                     Error::InvalidAtRule(format!(
-                        "Attribute '{}' not found on element selected by '{}'",
-                        attr, tag,
+                        "Attribute '{attr}' not found on element selected by '{tag}'"
                     ))
                 })
                 .map(|value| value.to_string())
