@@ -1,7 +1,8 @@
 [workspace.package]
 version = "0.1.0"
-authors = ["FITAHIANA Nomeniavo Joee <24nomeniavo@gmail.com>"]
+authors = ["FITAHIANA Nomeniavo Joe <24nomeniavo@gmail.com>"]
 edition = "2021"
+readme = "README"
 license-file = "LICENSE"
 description = "Web scraping library with derive macros"
 
