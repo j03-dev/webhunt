@@ -45,7 +45,7 @@ pub fn hunt_derive(input: TokenStream) -> TokenStream {
 
     let expanded = quote! {
         impl Hunt for #struct_name {
-            fn from_html(html: &webhunt::Html) -> Result<Self, webhunt::Error>
+            fn from_html<'a>(html: &webhunt::Html) -> Result<Self, webhunt::Error<'a>>
             {
                 Ok(
                     Self {

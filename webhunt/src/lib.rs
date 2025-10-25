@@ -4,7 +4,7 @@ pub use webhunt_derive::Hunt;
 pub type Error<'a> = scraper::error::SelectorErrorKind<'a>;
 
 pub fn get_element_inner_html<'i, T: FromIterator<String>>(
-    html: &'i Html,
+    html: &Html,
     tag: &'i str,
 ) -> Result<T, Error<'i>> {
     let selector = Selector::parse(tag)?;
@@ -38,7 +38,7 @@ pub async fn open(url: &str) -> Result<Html, reqwest::Error> {
 }
 
 pub trait Hunt {
-    fn from_html<'a>(html: &'a Html) -> Result<Self, Error<'a>>
+    fn from_html<'a>(html: &Html) -> Result<Self, Error<'a>>
     where
         Self: Sized;
 }
