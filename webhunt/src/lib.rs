@@ -30,6 +30,7 @@ pub fn get_element_attribute<'a, T: FromIterator<String>>(
         })
         .collect()
 }
+
 pub async fn open(url: &str) -> Result<Html, reqwest::Error> {
     let response = reqwest::get(url).await?;
     let document = response.text().await?;
