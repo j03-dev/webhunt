@@ -4,7 +4,7 @@ pub use webhunt_derive::Hunt;
 pub type Error<'a> = scraper::error::SelectorErrorKind<'a>;
 
 pub fn get_element_inner_html<'i, T: FromIterator<String>>(
-    html: &'i Html,
+    html: &Html,
     tag: &'i str,
 ) -> Result<T, Error<'i>> {
     let selector = Selector::parse(tag)?;
@@ -14,7 +14,7 @@ pub fn get_element_inner_html<'i, T: FromIterator<String>>(
 pub fn get_element_attribute<'a, T: FromIterator<String>>(
     html: &Html,
     tag: &'a str,
-    attr: &'a str,
+    attr: &str,
 ) -> Result<T, Error<'a>> {
     let selector = Selector::parse(tag)?;
     html.select(&selector)
