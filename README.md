@@ -30,8 +30,11 @@ const HTML: &str =  r#"
       <div class="content">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut pulvinar blandit lacinia.
       </div>
-      <a class="link" href="https://example.com">
-        <button>More</button>
+      <a class="link" href="https://example.com/page1">
+        <button>Page 1</button>
+      </a>
+      <a class="link" href="https://example.com/page2">
+        <button>Page 2</button>
       </a>
     <body>
   </html>
@@ -46,15 +49,19 @@ struct LoremIpsum {
   #[select(tag="div.content")]
   content: String,
 
+  // The 'Hunt' macro automatically collects all elements matching 'a.link'
+  // and extracts the 'href' attribute for each one into the vector.
   #[select(tag="a.link", attr="href")]
-  link: String
+  links: Vec<String>
 }
 
-let html = Html::parse_document(HTML);
+fn main() {
+    let html = Html::parse_document(HTML);
 
-let data = LoremIpsum::from_html(&html).unwrap();
+    let data = LoremIpsum::from_html(&html).unwrap();
 
-println!("title: {}", data.title);
-println!("content: {}", data.content);
-println!("link: {}", data.link);
+    println!("title: {}", data.title);
+    println!("content: {}", data.content);
+    println!("links: {:#?}", data.links);
+}
 ```
